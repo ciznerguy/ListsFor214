@@ -73,6 +73,8 @@ namespace ListsFor214
 
             list.SetNext(nodeToAdd);
             return head;
+            Console.WriteLine("hello");
+            ///לועוךלןע
 
         }
 
