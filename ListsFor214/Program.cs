@@ -138,7 +138,6 @@ namespace ListsFor214
                 {
                     return true;
                 }
-                lst2 = lst2.GetNext();
             }
             return false;
         }
@@ -300,12 +299,183 @@ namespace ListsFor214
         }
 
 
-        static void Main(string[] args)
+        public static Node<string> ConcatLists (Node<string> l1, Node<string> l2) 
         {
-            Node<int> lst1OnMain = CreateLinkedList(1, 2, 3,35);
-            Node<int> sorted = AddToSort(lst1OnMain, -9);
-            printList(sorted);
-           
+            
+            
+            if (l1 == null)
+            {
+                return l2;
+            }
+            if ( l2==null)
+            {
+                return l1;
+            }
+
+            Node<string> temp = l2;
+
+            Node<string> newList = new Node<string>("-111");
+            Node<string> current = newList;
+
+
+            while (l1 != null) 
+            {
+             
+                
+                while (l2 != null)
+                {
+                    Node<string> nodeToAdd = new Node<string> (l1.GetValue()+l2.GetValue());
+                    current.SetNext(nodeToAdd);
+                    current=current.GetNext();
+                    l2 = l2.GetNext();
+
+                }
+                l1=l1.GetNext();
+                l2 = temp;
+            
+            }
+            return newList.GetNext();
+        }
+
+        public static int ListLength(Node<int> listToCheck)
+        {
+            if (listToCheck == null)
+            {
+                return 0;
+            }
+            int lngth = 0;
+
+            while (listToCheck != null)
+            {
+                lngth++;
+                listToCheck = listToCheck.GetNext();
+            }
+            return lngth;
+        }
+
+        public static int FindMax(Node<int> listToCheck, int start, int end)
+        {
+            if (listToCheck == null || start < 0 || end < start)
+            {
+                return 0;
+            }
+
+            if (end - start > ListLength(listToCheck))
+                {
+                return 0;
+            }
+        
+            // להתקדם לחוליה הראשונה
+            for (int i = 0; i < start; i++)
+            {
+                if (listToCheck.HasNext())
+                {
+                    listToCheck = listToCheck.GetNext();
+                }
+                else
+                {
+                    // Handle the case where the start position is out of bounds
+                    return 0;
+                }
+            }
+
+            int max = listToCheck.GetValue();
+      
+            // Iterate from start to end to find the maximum value
+            for (int i = start + 1; i <= end; i++)
+            {
+                if (listToCheck.HasNext())
+                {
+                    listToCheck = listToCheck.GetNext();
+                    int currentValue = listToCheck.GetValue();
+                    max = Math.Max(max, currentValue);
+                }
+                else
+                {
+                    // Handle the case where the end position is out of bounds
+                    return max;
+                }
+            }
+
+            return max;
+        }
+
+        public static int FindMin(Node<int> listToCheck, int start, int end)
+        {
+            // Stage 1: Check for invalid input conditions
+            if (listToCheck == null || start < 0 || end < start || end - start > ListLength(listToCheck))
+            {
+                Console.WriteLine("Invalid input conditions");
+                return 0;
+            }
+
+            // Stage 2: Move to the start position
+            for (int i = 0; i < start; i++)
+            {
+                if (listToCheck.HasNext())
+                {
+                    listToCheck = listToCheck.GetNext();
+                }
+                else
+                {
+                    // Handle the case where the start position is out of bounds
+                    Console.WriteLine("Start position out of bounds");
+                    return 0;
+                }
+            }
+
+            // Stage 3: Initialize min with the value of the starting position
+            int min = listToCheck.GetValue();
+
+            // Stage 4: Iterate from start to end to find the minimum value
+            for (int i = start + 1; i <= end; i++)
+            {
+                if (listToCheck.HasNext())
+                {
+                    listToCheck = listToCheck.GetNext();
+                    int currentValue = listToCheck.GetValue();
+                    min = Math.Min(min, currentValue);
+                }
+                else
+                {
+                    // Handle the case where the end position is out of bounds
+                    Console.WriteLine("End position out of bounds");
+                    return min;
+                }
+            }
+
+            // Stage 5: Display and return the minimum value
+            return min;
+        }
+
+
+        public static bool IsArranged(Node<int> listToCheck)
+        {
+
+
+       
+            if (listToCheck == null)
+            {
+                return true; // בחרתי שרשימה ריקה עונה לתנאים        
+            }
+            int lngth = ListLength(listToCheck);
+            if (lngth % 2 != 0)
+            {
+                return false;
+            }
+            
+            int maxInFirstHalf = FindMax(listToCheck, 1, lngth / 2-1);
+
+
+            
+            return FindMax(listToCheck,1,lngth/2)<FindMin(listToCheck,lngth/2+1,lngth-1);
+        }
+
+            static void Main(string[] args)
+        {
+            Node<int> intList = CreateLinkedList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+            Console.WriteLine(IsArranged(intList));
+
 
         }
     }

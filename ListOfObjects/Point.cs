@@ -55,6 +55,13 @@ namespace ListsOfObjects
             this.x = other.GetX();
             this.y = other.GetY();
         }
+
+        public override string ToString()
+        {
+            return "[" + x + "," + y + "]";
+        }
+
     }
+
 
 }
